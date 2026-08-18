@@ -1,0 +1,146 @@
+========================================================================
+ADIDAS PROCUREMENT OS - XAMPP + MYSQL / PHPMYADMIN
+========================================================================
+
+1. KIẾN TRÚC CHẠY LOCAL
+------------------------------------------------------------------------
+Frontend : React 19 + Vite + Tailwind CSS
+Backend  : Node.js + Express + TypeScript
+Database : MySQL/MariaDB của XAMPP, kết nối bằng mysql2
+Admin DB : phpMyAdmin
+URL      : http://localhost:3000
+
+Apache không trực tiếp phục vụ React/Express. Có thể Start Apache trong
+XAMPP nếu bạn muốn dùng phpMyAdmin, nhưng backend của ứng dụng vẫn chạy
+bằng Node.js ở port 3000.
+
+
+2. CHẠY XAMPP
+------------------------------------------------------------------------
+- Mở XAMPP Control Panel.
+- Start MySQL.
+- Apache là tùy chọn.
+- Mở phpMyAdmin:
+      http://localhost/phpmyadmin/
+
+
+3. DATABASE
+------------------------------------------------------------------------
+Tên database:
+      adidas_procurement
+
+File SQL:
+      database.sql
+
+Trong phpMyAdmin:
+  1. Chọn Import.
+  2. Chọn database.sql.
+  3. Thực hiện import.
+
+File SQL chứa schema MySQL/InnoDB, foreign keys và dữ liệu seed.
+
+
+4. FILE .ENV
+------------------------------------------------------------------------
+Copy:
+      .env.example
+
+thành:
+      .env
+
+Cấu hình mặc định:
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=adidas_procurement
+PORT=3000
+CORS_ORIGIN=http://localhost:3000
+
+Nếu tài khoản root của MySQL XAMPP có password thì điền password vào
+DB_PASSWORD.
+
+
+5. CÀI VÀ CHẠY
+------------------------------------------------------------------------
+Mở Terminal tại thư mục project:
+
+      npm install
+      npm install mysql2
+      npm run dev
+
+Sau đó mở:
+
+      http://localhost:3000
+
+
+6. CHẠY BUILD
+------------------------------------------------------------------------
+Nếu muốn chạy bản build:
+
+      npm install
+      npm run build
+      npm start
+
+Mở:
+
+      http://localhost:3000
+
+
+7. MYSQL CONNECTION
+------------------------------------------------------------------------
+src/server/relationalDb.ts sử dụng mysql2 và kết nối:
+
+      host     = localhost
+      port     = 3306
+      user     = root
+      password = giá trị DB_PASSWORD
+      database = adidas_procurement
+
+SQLite/sql.js không còn là database runtime của ứng dụng.
+
+
+8. NẾU GẶP LỖI
+------------------------------------------------------------------------
+ECONNREFUSED 127.0.0.1:3306
+  -> MySQL trong XAMPP chưa chạy hoặc port không phải 3306.
+
+ER_ACCESS_DENIED_ERROR
+  -> Kiểm tra DB_USER / DB_PASSWORD trong .env.
+
+Unknown database
+  -> Import database.sql hoặc kiểm tra DB_NAME.
+
+Table doesn't exist
+  -> Chọn adidas_procurement trong phpMyAdmin và import database.sql.
+
+Port 3000 đã được sử dụng
+  -> Đổi PORT trong .env, ví dụ PORT=3001.
+
+
+9. LUỒNG CHẠY CHUẨN
+------------------------------------------------------------------------
+XAMPP MySQL
+    |
+    v
+phpMyAdmin -> adidas_procurement <- database.sql
+    |
+    v
+npm install
+    |
+    v
+npm run dev
+    |
+    v
+Node.js + Express + mysql2
+    |
+    +---- React/Vite
+    |
+    +---- REST API /api/*
+    |
+    +---- SSE /api/events
+    |
+    v
+http://localhost:3000
+========================================================================

@@ -1,0 +1,8 @@
+{
+  "name": "Adidas Procurement OS",
+  "description": "Enterprise procurement management operating system for Adidas supply chain, sourcing, warehouse, accounting, administration and vendor portal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
